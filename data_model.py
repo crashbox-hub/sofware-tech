@@ -8,7 +8,7 @@ import pandas as pd
 data_set = pd.read_csv("Crash Statistics Victoria.csv")
 
 # Create a new data frame with only the relevant data
-
+data_set
 
 
 
