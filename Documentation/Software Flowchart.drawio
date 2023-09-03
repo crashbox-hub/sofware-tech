@@ -1,0 +1,117 @@
+<mxfile host="Electron" modified="2023-08-31T02:06:26.601Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="Wm_fWOHlO403XXUPyOC3" version="21.6.8" type="device">
+  <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
+    <mxGraphModel dx="2389" dy="1838" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WIyWlLk6GJQsqaUBKTNV-3" target="DJxY7z5V8m9yEBbPhUvN-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-3" value="User opens application" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="160" y="80" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-0" target="WIyWlLk6GJQsqaUBKTNV-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-0" value="Start" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="160" y="-10" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-2" target="DJxY7z5V8m9yEBbPhUvN-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-2" value="Clicks on Accident Info" style="rounded=0;whiteSpace=wrap;html=1;glass=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-20" y="310" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-3" target="DJxY7z5V8m9yEBbPhUvN-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-3" value="User selects accident type" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-20" y="410" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-4" target="DJxY7z5V8m9yEBbPhUvN-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-4" value="User selects the date range" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-20" y="520" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-8" target="DJxY7z5V8m9yEBbPhUvN-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-8" value="Click Generate Graph" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-20" y="610" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-10" target="DJxY7z5V8m9yEBbPhUvN-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-10" target="DJxY7z5V8m9yEBbPhUvN-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-10" value="User Selects from Navigation Bar" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="145" y="150" width="150" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-13" target="DJxY7z5V8m9yEBbPhUvN-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-13" value="Clicks on Map View" style="whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="310" y="310" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-17" target="DJxY7z5V8m9yEBbPhUvN-19">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-17" value="User selects accident type" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="300" y="410" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-19" target="DJxY7z5V8m9yEBbPhUvN-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-19" value="User selects the date range" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="300" y="520" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-35" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-20" target="DJxY7z5V8m9yEBbPhUvN-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-20" value="Click Generate Map" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="300" y="610" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-210" y="890" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="880" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-24" value="Select type of Graph" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-25" y="700" width="150" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-28" target="DJxY7z5V8m9yEBbPhUvN-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-28" value="Type of Accident" style="rounded=0;whiteSpace=wrap;html=1;glass=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-280" y="890" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="DJxY7z5V8m9yEBbPhUvN-29" target="DJxY7z5V8m9yEBbPhUvN-32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-29" value="Time of Day" style="whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="230" y="880" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-30" value="User Views Bar Graph" style="whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-270" y="1000" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-32" value="User views Line Chart" style="whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="230" y="990" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="DJxY7z5V8m9yEBbPhUvN-34" value="User views Map with Hotspots for accident region" style="whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=6;spacingTop=-4;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="310" y="690" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
