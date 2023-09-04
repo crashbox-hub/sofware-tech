@@ -32,6 +32,12 @@ class MyFrame(wx.Frame):
         home_panel = HomePanel(notebook)
         notebook.AddPage(home_panel, "Home")
 
+        accinfo_panel = AccInfoPanel(notebook)
+        notebook.AddPage(accinfo_panel, "Accident Info")
+
+        map_panel = MapPanel(notebook)
+        notebook.AddPage(map_panel, "Map")
+
         self.Centre()
         self.Show(True)
 
@@ -51,6 +57,20 @@ class HomePanel(wx.Panel):
     def __int__(self, parent):
         super(HomePanel, self).__init__(parent)
         home_text = wx.StaticText(self, label="Home Tab Welcome Here!")
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+#Define AccInfoPanel class for notebook
+class AccInfoPanel(wx.Panel):
+    def __int__(self, parent):
+        super(AccInfoPanel, self).__init__(parent)
+        acc_info_text = wx.StaticText(self, label="Acc Info Tab Welcome Here!")
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+#Define MapPanel class for notebook
+class MapPanel(wx.Panel):
+    def __int__(self, parent):
+        super(MapPanel, self).__init__(parent)
+        map_text = wx.StaticText(self, label="Home Tab Welcome Here!")
         sizer = wx.BoxSizer(wx.VERTICAL)
 
 
