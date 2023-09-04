@@ -12,10 +12,11 @@ One other ‘insight’ or analysis tool of your choice
 
 import wx
 
+# Custom class from wc.Frame
 class MyFrame(wx.Frame):
     def __init__(self, parent, title):
         super(MyFrame, self).__init__(parent, title=title, size=(300, 200))
-
+        #Panel for the UI elements
         panel = wx.Panel(self)
         button = wx.Button(panel, label="Click Me!")
 
@@ -27,10 +28,10 @@ class MyFrame(wx.Frame):
 
         self.Centre()
         self.Show(True)
-
+    # Event Handler
     def on_button_click(self, event):
         wx.MessageBox("Button clicked!")
-
+# Entry Point
 if __name__ == '__main__':
     app = wx.App()
     frame = MyFrame(None, "Basic wxPython UI")
