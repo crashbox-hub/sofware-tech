@@ -24,24 +24,29 @@ class MyFrame(wx.Frame):
 
         # notebook for multiple tabs
         notebook = wx.Notebook(self)
-        button = wx.Button(notebook, label="Click Me!")
-
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(button, 0, wx.ALIGN_CENTER | wx.ALL, 10)
         notebook.SetSizer(sizer)
 
-        self.Bind(wx.EVT_BUTTON, self.on_button_click, button)
+        # button = wx.Button(notebook, label="Click Me!")
+
+        home_panel = HomePanel(notebook)
+        notebook.AddPage(home_panel, "Home")
 
         self.Centre()
         self.Show(True)
 
-    # Event Handler
+"""
+# For the on_button_click function
+        sizer.Add(button, 0, wx.ALIGN_CENTER | wx.ALL, 10)
+        self.Bind(wx.EVT_BUTTON, self.on_button_click, button)
+"""
+"""
+    # Function on_button_click
     def on_button_click(self, event):
         wx.MessageBox("Button clicked!")
+"""
 
-
-
-#Define Home Panel class for notebook
+#Define HomePanel class for notebook
 class HomePanel(wx.Panel):
     def __int__(self, parent):
         super(HomePanel, self).__init__(parent)
