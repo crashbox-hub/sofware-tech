@@ -51,18 +51,25 @@ class HomePanel(wx.Panel):
 
 # Define AccInfoPanel class for notebook
 class AccInfoPanel(wx.Panel):
-    def __int__(self, parent, *args, **kwargs):
+    def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         # Headline Text
-        self.headline_text = wx.StaticText(self, style=wx.TE_CENTER & ~wx.TE_LEFT & ~wx.TE_RIGHT,
-                                           label="Test")
-        sizer.Add(self.headline_text, 0, wx.ALL | wx.EXPAND, 5)
+        self.headline_text = wx.StaticText(self, style=wx.ALIGN_CENTER,
+                                           label="Accident Information")
+        sizer.Add(self.headline_text, 0, wx.ALL | wx.EXPAND, BORDER)
+
+        # Config calendar to parameters
+        lower_date = wx.DateTime()
+        lower_date.Set(1, wx.DateTime.Jul, 2013)
+        upper_date = wx.DateTime()
+        upper_date.Set(1, wx.DateTime.Feb, 2019)
 
         # Calendar under the text
-        self.cal = wx.adv.CalendarCtrl(self, 10, wx.DateTime.Now())
-        sizer.Add(self.cal, 0, wx.ALL | wx.CENTER, 5)
+        self.cal = wx.adv.CalendarCtrl(self, wx.ID_ANY, lower_date)
+        sizer.Add(self.cal, 0, wx.ALL | wx.CENTER, BORDER)
+
         self.SetSizer(sizer)
 
 
