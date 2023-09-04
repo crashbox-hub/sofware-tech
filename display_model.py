@@ -22,7 +22,7 @@ class MyFrame(wx.Frame):
     def __init__(self, parent, title):
         super(MyFrame, self).__init__(parent, title=title, size=(500, 400))
 
-        #Panel for the UI elements
+        # notebook for multiple tabs
         notebook = wx.Notebook(self)
         button = wx.Button(notebook, label="Click Me!")
 
@@ -34,9 +34,22 @@ class MyFrame(wx.Frame):
 
         self.Centre()
         self.Show(True)
+
     # Event Handler
     def on_button_click(self, event):
         wx.MessageBox("Button clicked!")
+
+
+
+#Define Home Panel class for notebook
+class HomePanel(wx.Panel):
+    def __int__(self, parent):
+        super(HomePanel, self).__init__(parent)
+        home_text = wx.StaticText(self, label="Home Tab Welcome Here!")
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+
+
 # Entry Point
 if __name__ == '__main__':
     app = wx.App()
