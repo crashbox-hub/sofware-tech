@@ -18,6 +18,7 @@ import wx
 import wx.adv
 import datetime
 
+
 BORDER = 5
 
 
@@ -45,8 +46,20 @@ class MyFrame(wx.Frame):
 
 # Define HomePanel class for notebook
 class HomePanel(wx.Panel):
-    def __int__(self, parent):
-        super(HomePanel, self).__init__(parent)
+    def __init__(self, parent, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        # Headline Text
+        self.headline_text = wx.StaticText(self, style=wx.ALIGN_CENTER,
+                                           label="Accident Information")
+        sizer.Add(self.headline_text, 0, wx.ALL | wx.EXPAND, BORDER)
+
+        # Load and display the image
+        vic_graphic = wx.Image('state_vic_graphic.jpg', wx.BITMAP_TYPE_ANY).ConvertToBitmap()
+        graphic_bitmap = wx.StaticBitmap(self, -1, vic_graphic, (10, 5), (vic_graphic.GetWidth(), vic_graphic.GetHeight()))
+        sizer.Add(graphic_bitmap, 0, wx.ALL | wx.CENTER, BORDER)
+
 
 
 # Define AccInfoPanel class for notebook
