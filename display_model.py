@@ -93,6 +93,24 @@ class MapPanel(wx.Panel):
     def __int__(self, parent):
         super(MapPanel, self).__init__(parent)
 
+# Define DatePickerPanel class
+class DatePickerPanel(wx.Panel):
+    def __init__(self, parent, label="Select Date:"):
+        super(DatePickerPanel, self).__init__(parent)
+
+        # Create a date picker control
+        self.date_picker = wx.adv.DatePickerCtrl(self)
+
+
+        # Create a label for the date picker
+        date_label = wx.StaticText(self, label=label)
+
+        # Create a sizer to arrange the label and date picker
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(date_label, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, BORDER)
+        sizer.Add(self.date_picker, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, BORDER)
+        self.SetSizer(sizer)
+
 
 # Entry Point
 if __name__ == '__main__':
