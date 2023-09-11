@@ -55,11 +55,13 @@ class HomePanel(wx.Panel):
                                            label="Accident Information")
         sizer.Add(self.headline_text, 0, wx.ALL | wx.EXPAND, BORDER)
 
-        # Load and display the image
-        vic_graphic = wx.Image('state_vic_graphic.jpg', wx.BITMAP_TYPE_ANY).ConvertToBitmap()
-        graphic_bitmap = wx.StaticBitmap(self, -1, vic_graphic, (10, 5), (vic_graphic.GetWidth(), vic_graphic.GetHeight()))
+        # Load and display the image centered in the panel, resizes to the window size
+        vic_graphic = wx.Image('state_vic_graphic.jpg', wx.BITMAP_TYPE_ANY).Scale(200, 200)
+        graphic_bitmap = wx.StaticBitmap(self, -1, vic_graphic.ConvertToBitmap(), (0, 0),
+                                         (vic_graphic.GetWidth(), vic_graphic.GetHeight()))
         sizer.Add(graphic_bitmap, 0, wx.ALL | wx.CENTER, BORDER)
 
+        self.SetSizer(sizer)
 
 
 # Define AccInfoPanel class for notebook
