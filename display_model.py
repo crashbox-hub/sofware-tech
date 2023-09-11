@@ -45,15 +45,24 @@ class HomePanel(wx.Panel):
         self.SetSizer(sizer)
 
 # Define AccInfoPanel class for notebook
+# Define AccInfoPanel class for notebook
 class AccInfoPanel(wx.Panel):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
-        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        # Left side search bar
+        search_bar = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER, size=(200, -1))
+        sizer.Add(search_bar, 0, wx.ALL | wx.EXPAND, BORDER)
+
+        # Right side content
+        content_sizer = wx.BoxSizer(wx.VERTICAL)
+
         # Headline Text
         self.headline_text = wx.StaticText(self, style=wx.ALIGN_CENTER,
                                            label="Accident Information")
-        sizer.Add(self.headline_text, 0, wx.ALL | wx.EXPAND, BORDER)
+        content_sizer.Add(self.headline_text, 0, wx.ALL | wx.EXPAND, BORDER)
 
         # Config calendar to parameters
         lower_date = wx.DateTime()
@@ -63,22 +72,27 @@ class AccInfoPanel(wx.Panel):
 
         # Date Picker for Start Date
         self.start_date_picker = DatePickerPanel(self, label="Select Start Date:", initial_date=lower_date)
-        sizer.Add(self.start_date_picker, 0, wx.ALL | wx.EXPAND, BORDER)
+        content_sizer.Add(self.start_date_picker, 0, wx.ALL | wx.EXPAND, BORDER)
 
         # Date Picker for End Date
         self.end_date_picker = DatePickerPanel(self, label="Select End Date:", initial_date=upper_date)
-        sizer.Add(self.end_date_picker, 0, wx.ALL | wx.EXPAND, BORDER)
+        content_sizer.Add(self.end_date_picker, 0, wx.ALL | wx.EXPAND, BORDER)
 
         # Calendar under the text
         self.cal = wx.adv.CalendarCtrl(self, wx.ID_ANY, lower_date)
-        sizer.Add(self.cal, 0, wx.ALL | wx.CENTER, BORDER)
+        content_sizer.Add(self.cal, 0, wx.ALL | wx.CENTER, BORDER)
 
+        sizer.Add(content_sizer, 1, wx.EXPAND)
         self.SetSizer(sizer)
 
 # Define MapPanel class for notebook
 class MapPanel(wx.Panel):
     def __int__(self, parent):
         super(MapPanel, self).__init__(parent)
+
+
+
+
 
 # Define DatePickerPanel class
 class DatePickerPanel(wx.Panel):
