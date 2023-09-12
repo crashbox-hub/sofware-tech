@@ -45,16 +45,15 @@ class HomePanel(wx.Panel):
         self.SetSizer(sizer)
 
 # Define AccInfoPanel class for notebook
-# Define AccInfoPanel class for notebook
 class AccInfoPanel(wx.Panel):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Left side search bar
-        search_bar = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER, size=(200, -1))
-        sizer.Add(search_bar, 0, wx.ALL | wx.EXPAND, BORDER)
+        # Search bar with magnifying glass icon in the top left corner
+        search_bar = SearchPanel(self)
+        sizer.Add(search_bar, 0, wx.ALL, BORDER)
 
         # Right side content
         content_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -83,6 +82,29 @@ class AccInfoPanel(wx.Panel):
         content_sizer.Add(self.cal, 0, wx.ALL | wx.CENTER, BORDER)
 
         sizer.Add(content_sizer, 1, wx.EXPAND)
+        self.SetSizer(sizer)
+
+# Define SearchPanel class for the search bar
+class SearchPanel(wx.Panel):
+    def __init__(self, parent):
+        super(SearchPanel, self).__init__(parent, style=wx.BORDER_SIMPLE)
+
+        # Set up vertical box sizer for the search bar
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+        # Set up horizontal box sizer for the search bar contents
+        search_sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        # Magnifying glass icon wx.ART_FIND = type of icon, wx.ART_BUTTON = category of icon
+        search_icon = wx.ArtProvider.GetBitmap(wx.ART_FIND, wx.ART_BUTTON, (16, 16))
+        search_button = wx.BitmapButton(self, wx.ID_ANY, search_icon, style=wx.BORDER_NONE)
+        search_sizer.Add(search_button, 0, wx.ALL, BORDER)
+
+        # Text input
+        search_bar = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER | wx.NO_BORDER, size=(-1, 25))
+        search_sizer.Add(search_bar, 1, wx.ALL | wx.EXPAND, BORDER)
+
+        sizer.Add(search_sizer, 0, wx.ALL | wx.EXPAND, BORDER)
         self.SetSizer(sizer)
 
 # Define MapPanel class for notebook
