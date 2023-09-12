@@ -1,8 +1,12 @@
 import wx
 import wx.adv
 import datetime
+import pandas as pd
+import matplotlib.pyplot as plt
+
 
 BORDER = 5
+
 
 # Custom class from wx.Frame
 class MyFrame(wx.Frame):
@@ -25,6 +29,7 @@ class MyFrame(wx.Frame):
         self.Centre()
         self.Show(True)
 
+
 # Define HomePanel class for notebook
 class HomePanel(wx.Panel):
     def __init__(self, parent, *args, **kwargs):
@@ -43,6 +48,7 @@ class HomePanel(wx.Panel):
         sizer.Add(graphic_bitmap, 0, wx.ALL | wx.CENTER, BORDER)
 
         self.SetSizer(sizer)
+
 
 # Define AccInfoPanel class for notebook
 class AccInfoPanel(wx.Panel):
@@ -92,6 +98,7 @@ class AccInfoPanel(wx.Panel):
         sizer.Add(content_sizer, 1, wx.EXPAND)
         self.SetSizer(sizer)
 
+
 # Define SearchPanel class for the search bar
 class SearchPanel(wx.Panel):
     def __init__(self, parent):
@@ -115,13 +122,39 @@ class SearchPanel(wx.Panel):
         sizer.Add(search_sizer, 0, wx.ALL | wx.EXPAND, BORDER)
         self.SetSizer(sizer)
 
+
 # Define MapPanel class for notebook
 class MapPanel(wx.Panel):
-    def __int__(self, parent):
+    def __init__(self, parent):
         super(MapPanel, self).__init__(parent)
 
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+        # Load data from the CSV file
+        data = pd.read_csv('Crash Statistics Victoria.csv')
+
+        # Extract longitude and latitude coordinates
+        longitude = data['LONGITUDE']
+        latitude = data['LATITUDE']
+
+        # Create a scatter plot
+        plt.figure(figsize=(8, 6))
+        plt.scatter(longitude, latitude, s=10, alpha=0.5)
+        plt.title('Accident Locations')
+        plt.xlabel('Longitude')
+        plt.ylabel('Latitude')
+
+        # Save the plot as a PNG file
+        plt.savefig('accident_locations.png')
+
+        # Load the PNG file and display it in the panel
+        accident_locations = wx.Image('accident_locations.png', wx.BITMAP_TYPE_ANY).Scale(200, 200)
+        graphic_bitmap = wx.StaticBitmap(self, -1, accident_locations.ConvertToBitmap(), (0, 0),
+                                            (accident_locations.GetWidth(), accident_locations.GetHeight()))
+        sizer.Add(graphic_bitmap, 0, wx.ALL | wx.CENTER, BORDER)
 
 
+        self.SetSizer(sizer)
 
 
 # Define DatePickerPanel class
@@ -140,6 +173,7 @@ class DatePickerPanel(wx.Panel):
         sizer.Add(date_label, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, BORDER)
         sizer.Add(self.date_picker, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, BORDER)
         self.SetSizer(sizer)
+
 
 # Entry Point
 if __name__ == '__main__':
