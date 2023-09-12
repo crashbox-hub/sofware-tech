@@ -71,15 +71,23 @@ class AccInfoPanel(wx.Panel):
 
         # Date Picker for Start Date
         self.start_date_picker = DatePickerPanel(self, label="Select Start Date:", initial_date=lower_date)
-        content_sizer.Add(self.start_date_picker, 0, wx.ALL | wx.EXPAND, BORDER)
+        content_sizer.Add(self.start_date_picker, 0, wx.ALL | wx.CENTER, BORDER)
 
         # Date Picker for End Date
         self.end_date_picker = DatePickerPanel(self, label="Select End Date:", initial_date=upper_date)
-        content_sizer.Add(self.end_date_picker, 0, wx.ALL | wx.EXPAND, BORDER)
+        content_sizer.Add(self.end_date_picker, 0, wx.ALL | wx.CENTER, BORDER)
 
         # Calendar under the text
         self.cal = wx.adv.CalendarCtrl(self, wx.ID_ANY, lower_date)
         content_sizer.Add(self.cal, 0, wx.ALL | wx.CENTER, BORDER)
+
+        # Checkbox for "Alcohol Related?"
+        self.alcohol_related_checkbox = wx.CheckBox(self, label="Alcohol Related?")
+        content_sizer.Add(self.alcohol_related_checkbox, 0, wx.ALL | wx.CENTER, BORDER)
+
+        # Button for "Generate Report"
+        self.generate_report_button = wx.Button(self, label="Generate Report")
+        content_sizer.Add(self.generate_report_button, 0, wx.ALL | wx.CENTER, BORDER)
 
         sizer.Add(content_sizer, 1, wx.EXPAND)
         self.SetSizer(sizer)
