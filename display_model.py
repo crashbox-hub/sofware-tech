@@ -69,18 +69,29 @@ class AccInfoPanel(wx.Panel):
         self.SetSizer(sizer)
 
 # Define SearchPanel class for the search bar and date picker
-# Define SearchPanel class for the search bar and date picker
 class SearchPanel(wx.Panel):
     def __init__(self, parent):
         super(SearchPanel, self).__init__(parent, style=wx.BORDER_SIMPLE)
 
-        # Set up vertical box sizer for the search bar
+        # Set up vertical box sizer for the Dropdown
         sizer = wx.BoxSizer(wx.VERTICAL)
 
-        # Dropdown menu with options
-        options = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
-        self.choice = wx.Choice(self, choices=options)
-        sizer.Add(self.choice, 0, wx.ALL | wx.EXPAND, BORDER)
+        # Create a label for the Dropdown
+        label = wx.StaticText(self, wx.ID_ANY, "Select Options:")
+        sizer.Add(label, 0, wx.ALL | wx.EXPAND, BORDER)
+
+        # ListBox with the options
+        self.list_box = wx.ListBox(self, wx.ID_ANY,
+                                   choices=["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"],
+                                   style=wx.LB_MULTIPLE)
+
+        # Add the ListBox to the sizer
+        sizer.Add(self.list_box, 0, wx.ALL | wx.EXPAND, BORDER)
+
+
+        # Create a "Clear" button that sits under the Dropdown
+        self.clear_button = wx.Button(self, label="Clear")
+        sizer.Add(self.clear_button, 0, wx.ALL | wx.EXPAND, BORDER)
 
         # Create a sizer for date selections
         date_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -115,6 +126,7 @@ class SearchPanel(wx.Panel):
         self.generate_report_button = wx.Button(self, label="Generate Report")
         date_sizer.Add(self.generate_report_button, 0, wx.ALL | wx.EXPAND, BORDER)
 
+        # Add date sizer to the main sizer
         sizer.Add(date_sizer, 0, wx.ALL | wx.EXPAND, BORDER)
 
         self.SetSizer(sizer)
