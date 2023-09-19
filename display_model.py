@@ -69,6 +69,7 @@ class AccInfoPanel(wx.Panel):
         self.SetSizer(sizer)
 
 # Define SearchPanel class for the search bar and date picker
+# Define SearchPanel class for the search bar and date picker
 class SearchPanel(wx.Panel):
     def __init__(self, parent):
         super(SearchPanel, self).__init__(parent, style=wx.BORDER_SIMPLE)
@@ -76,39 +77,58 @@ class SearchPanel(wx.Panel):
         # Set up vertical box sizer for the search bar
         sizer = wx.BoxSizer(wx.VERTICAL)
 
-        # Set up horizontal box sizer for the search bar contents
-        search_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        # Dropdown menu with options
+        options = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
+        self.choice = wx.Choice(self, choices=options)
+        sizer.Add(self.choice, 0, wx.ALL | wx.EXPAND, BORDER)
 
-        # Magnifying glass icon wx.ART_FIND = type of icon, wx.ART_BUTTON = category of icon
-        search_icon = wx.ArtProvider.GetBitmap(wx.ART_FIND, wx.ART_BUTTON, (16, 16))
-        search_button = wx.BitmapButton(self, wx.ID_ANY, search_icon, style=wx.BORDER_NONE)
-        search_sizer.Add(search_button, 0, wx.ALL, BORDER)
+        # Create a sizer for date selections
+        date_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        # Text input
-        search_bar = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER | wx.NO_BORDER, size=(-1, 25))
-        search_sizer.Add(search_bar, 1, wx.ALL | wx.EXPAND, BORDER)
+        # Config calendar to parameters
+        lower_date = wx.DateTime()
+        lower_date.Set(1, wx.DateTime.Jul, 2013)
+        upper_date = wx.DateTime()
+        upper_date.Set(1, wx.DateTime.Feb, 2019)
 
-        sizer.Add(search_sizer, 0, wx.ALL | wx.EXPAND, BORDER)
+        # Create a text field for start date
+        self.start_date_text = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.NO_BORDER)
+        date_sizer.Add(self.start_date_text, 0, wx.ALL | wx.EXPAND, BORDER)
 
-        # Create a date picker control
-        self.date_picker = wx.adv.DatePickerCtrl(self, wx.ID_ANY, style=wx.adv.DP_DEFAULT)
-        date_label = wx.StaticText(self, label="Select Date:")
+        # Create a calendar icon button for start date
+        cal_graphic = wx.Image('calendar.jpg', wx.BITMAP_TYPE_ANY).Scale(10, 10)
+        start_date_calendar_icon = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap(cal_graphic, wx.BITMAP_TYPE_PNG))
+        date_sizer.Add(start_date_calendar_icon, 0, wx.ALL, BORDER)
 
-        # Create a sizer to arrange the label and date picker
-        date_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        date_sizer.Add(date_label, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, BORDER)
-        date_sizer.Add(self.date_picker, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, BORDER)
+        # Create a date picker control for start date
+        self.start_date_picker = wx.adv.DatePickerCtrl(self, wx.ID_ANY, dt=lower_date, style=wx.adv.DP_DROPDOWN | wx.adv.DP_SHOWCENTURY)
+        date_sizer.Add(self.start_date_picker, 0, wx.ALL | wx.EXPAND, BORDER)
+
+        # Create a text field for end date
+        self.end_date_text = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.NO_BORDER)
+        date_sizer.Add(self.end_date_text, 0, wx.ALL | wx.EXPAND, BORDER)
+
+        # Create a calendar icon button for end date
+        end_date_calendar_icon = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap(cal_graphic, wx.BITMAP_TYPE_PNG))
+        date_sizer.Add(end_date_calendar_icon, 0, wx.ALL, BORDER)
+
+        # Create a date picker control for end date
+        self.end_date_picker = wx.adv.DatePickerCtrl(self, wx.ID_ANY, dt=upper_date, style=wx.adv.DP_DROPDOWN | wx.adv.DP_SHOWCENTURY)
+        date_sizer.Add(self.end_date_picker, 0, wx.ALL | wx.EXPAND, BORDER)
+
+        # Create "Alcohol Related?" checkbox
+        self.alcohol_related_checkbox = wx.CheckBox(self, label="Alcohol Related?")
+        date_sizer.Add(self.alcohol_related_checkbox, 0, wx.ALL | wx.EXPAND, BORDER)
+
+        # Create "Generate Report" button
+        self.generate_report_button = wx.Button(self, label="Generate Report")
+        date_sizer.Add(self.generate_report_button, 0, wx.ALL | wx.EXPAND, BORDER)
+
         sizer.Add(date_sizer, 0, wx.ALL | wx.EXPAND, BORDER)
 
-        # Checkbox for "Alcohol Related?"
-        alcohol_related_checkbox = wx.CheckBox(self, label="Alcohol Related?")
-        sizer.Add(alcohol_related_checkbox, 0, wx.ALL | wx.EXPAND, BORDER)
-
-        # Button for "Generate Report"
-        generate_report_button = wx.Button(self, label="Generate Report")
-        sizer.Add(generate_report_button, 0, wx.ALL | wx.EXPAND, BORDER)
-
         self.SetSizer(sizer)
+
+
 
 # Define MapPanel class for notebook
 class MapPanel(wx.Panel):
