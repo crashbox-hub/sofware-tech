@@ -95,11 +95,6 @@ class SearchPanel(wx.Panel):
         self.start_date_text = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.NO_BORDER)
         date_sizer.Add(self.start_date_text, 0, wx.ALL | wx.EXPAND, BORDER)
 
-        # Create a calendar icon button for start date
-        cal_graphic = wx.Image('calendar.jpg', wx.BITMAP_TYPE_ANY).Scale(10, 10)
-        start_date_calendar_icon = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap(cal_graphic, wx.BITMAP_TYPE_PNG))
-        date_sizer.Add(start_date_calendar_icon, 0, wx.ALL, BORDER)
-
         # Create a date picker control for start date
         self.start_date_picker = wx.adv.DatePickerCtrl(self, wx.ID_ANY, dt=lower_date, style=wx.adv.DP_DROPDOWN | wx.adv.DP_SHOWCENTURY)
         date_sizer.Add(self.start_date_picker, 0, wx.ALL | wx.EXPAND, BORDER)
@@ -107,10 +102,6 @@ class SearchPanel(wx.Panel):
         # Create a text field for end date
         self.end_date_text = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.NO_BORDER)
         date_sizer.Add(self.end_date_text, 0, wx.ALL | wx.EXPAND, BORDER)
-
-        # Create a calendar icon button for end date
-        end_date_calendar_icon = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap(cal_graphic, wx.BITMAP_TYPE_PNG))
-        date_sizer.Add(end_date_calendar_icon, 0, wx.ALL, BORDER)
 
         # Create a date picker control for end date
         self.end_date_picker = wx.adv.DatePickerCtrl(self, wx.ID_ANY, dt=upper_date, style=wx.adv.DP_DROPDOWN | wx.adv.DP_SHOWCENTURY)
@@ -127,6 +118,7 @@ class SearchPanel(wx.Panel):
         sizer.Add(date_sizer, 0, wx.ALL | wx.EXPAND, BORDER)
 
         self.SetSizer(sizer)
+
 
 
 
