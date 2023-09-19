@@ -4,9 +4,7 @@ import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
 BORDER = 5
-
 
 # Custom class from wx.Frame
 class MyFrame(wx.Frame):
@@ -29,7 +27,6 @@ class MyFrame(wx.Frame):
         self.Centre()
         self.Show(True)
 
-
 # Define HomePanel class for notebook
 class HomePanel(wx.Panel):
     def __init__(self, parent, *args, **kwargs):
@@ -49,7 +46,6 @@ class HomePanel(wx.Panel):
 
         self.SetSizer(sizer)
 
-
 # Define AccInfoPanel class for notebook
 class AccInfoPanel(wx.Panel):
     def __init__(self, parent, *args, **kwargs):
@@ -58,8 +54,8 @@ class AccInfoPanel(wx.Panel):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         # Search bar with magnifying glass icon in the top left corner
-        search_bar = SearchPanel(self)
-        sizer.Add(search_bar, 0, wx.ALL, BORDER)
+        search_panel = SearchPanel(self)
+        sizer.Add(search_panel, 0, wx.ALL, BORDER)
 
         # Right side content
         content_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -69,37 +65,10 @@ class AccInfoPanel(wx.Panel):
                                            label="Accident Information")
         content_sizer.Add(self.headline_text, 0, wx.ALL | wx.EXPAND, BORDER)
 
-        # Config calendar to parameters
-        lower_date = wx.DateTime()
-        lower_date.Set(1, wx.DateTime.Jul, 2013)
-        upper_date = wx.DateTime()
-        upper_date.Set(1, wx.DateTime.Feb, 2019)
-
-        # Date Picker for Start Date
-        self.start_date_picker = DatePickerPanel(self, label="Select Start Date:", initial_date=lower_date)
-        content_sizer.Add(self.start_date_picker, 0, wx.ALL | wx.CENTER, BORDER)
-
-        # Date Picker for End Date
-        self.end_date_picker = DatePickerPanel(self, label="Select End Date:", initial_date=upper_date)
-        content_sizer.Add(self.end_date_picker, 0, wx.ALL | wx.CENTER, BORDER)
-
-        # Calendar under the text
-        self.cal = wx.adv.CalendarCtrl(self, wx.ID_ANY, lower_date)
-        content_sizer.Add(self.cal, 0, wx.ALL | wx.CENTER, BORDER)
-
-        # Checkbox for "Alcohol Related?"
-        self.alcohol_related_checkbox = wx.CheckBox(self, label="Alcohol Related?")
-        content_sizer.Add(self.alcohol_related_checkbox, 0, wx.ALL | wx.CENTER, BORDER)
-
-        # Button for "Generate Report"
-        self.generate_report_button = wx.Button(self, label="Generate Report")
-        content_sizer.Add(self.generate_report_button, 0, wx.ALL | wx.CENTER, BORDER)
-
         sizer.Add(content_sizer, 1, wx.EXPAND)
         self.SetSizer(sizer)
 
-
-# Define SearchPanel class for the search bar
+# Define SearchPanel class for the search bar and date picker
 class SearchPanel(wx.Panel):
     def __init__(self, parent):
         super(SearchPanel, self).__init__(parent, style=wx.BORDER_SIMPLE)
@@ -120,8 +89,26 @@ class SearchPanel(wx.Panel):
         search_sizer.Add(search_bar, 1, wx.ALL | wx.EXPAND, BORDER)
 
         sizer.Add(search_sizer, 0, wx.ALL | wx.EXPAND, BORDER)
-        self.SetSizer(sizer)
 
+        # Create a date picker control
+        self.date_picker = wx.adv.DatePickerCtrl(self, wx.ID_ANY, style=wx.adv.DP_DEFAULT)
+        date_label = wx.StaticText(self, label="Select Date:")
+
+        # Create a sizer to arrange the label and date picker
+        date_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        date_sizer.Add(date_label, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, BORDER)
+        date_sizer.Add(self.date_picker, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, BORDER)
+        sizer.Add(date_sizer, 0, wx.ALL | wx.EXPAND, BORDER)
+
+        # Checkbox for "Alcohol Related?"
+        alcohol_related_checkbox = wx.CheckBox(self, label="Alcohol Related?")
+        sizer.Add(alcohol_related_checkbox, 0, wx.ALL | wx.EXPAND, BORDER)
+
+        # Button for "Generate Report"
+        generate_report_button = wx.Button(self, label="Generate Report")
+        sizer.Add(generate_report_button, 0, wx.ALL | wx.EXPAND, BORDER)
+
+        self.SetSizer(sizer)
 
 # Define MapPanel class for notebook
 class MapPanel(wx.Panel):
@@ -153,27 +140,7 @@ class MapPanel(wx.Panel):
                                             (accident_locations.GetWidth(), accident_locations.GetHeight()))
         sizer.Add(graphic_bitmap, 0, wx.ALL | wx.CENTER, BORDER)
 
-
         self.SetSizer(sizer)
-
-
-# Define DatePickerPanel class
-class DatePickerPanel(wx.Panel):
-    def __init__(self, parent, label="Select Date:", initial_date=None):
-        super(DatePickerPanel, self).__init__(parent)
-
-        # Create a date picker control
-        self.date_picker = wx.adv.DatePickerCtrl(self, wx.ID_ANY, dt=initial_date, style=wx.adv.DP_DEFAULT)
-
-        # Create a label for the date picker
-        date_label = wx.StaticText(self, label=label)
-
-        # Create a sizer to arrange the label and date picker
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(date_label, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, BORDER)
-        sizer.Add(self.date_picker, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, BORDER)
-        self.SetSizer(sizer)
-
 
 # Entry Point
 if __name__ == '__main__':
