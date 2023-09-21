@@ -23,7 +23,7 @@ class MyFrame(wx.Frame):
         self.Show(True)
 
 
-class HomePanel(wx.Panel):
+class HomePanel(wx.Panel):  # Might put this in a different file
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
@@ -39,7 +39,7 @@ class HomePanel(wx.Panel):
         self.SetSizer(sizer)
 
 
-class AccInfoPanel(wx.Panel):
+class AccInfoPanel(wx.Panel): # Might put this in a different file
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
@@ -54,7 +54,7 @@ class AccInfoPanel(wx.Panel):
         self.SetSizer(sizer)
 
 
-class SearchPanel(wx.Panel):
+class SearchPanel(wx.Panel): # Might put this in a different file
     def __init__(self, parent):
         super(SearchPanel, self).__init__(parent, style=wx.BORDER_SIMPLE)
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -101,7 +101,7 @@ class SearchPanel(wx.Panel):
         self.SetSizer(sizer)
 
 
-class MapPanel(wx.Panel):
+class MapPanel(wx.Panel): # Might put this in a different file
     def __init__(self, parent):
         super(MapPanel, self).__init__(parent)
 

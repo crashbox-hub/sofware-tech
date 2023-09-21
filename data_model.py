@@ -1,5 +1,9 @@
 import sqlite3
 from datetime import datetime
+import pandas as pd
+
+crash_data = pd.read_csv('Crash Statistics Victoria.csv')
+
 
 
 # Create a table in the database if it doesn't exist
@@ -74,29 +78,32 @@ def create_table_if_not_exists(conn):
     conn.commit()
 
 
+
 # Search for records within a date range
-def search_vsads_by_date_range(conn, start_date, end_date):
+def count_vsads_by_date_range(conn, start_date, end_date):
     cursor = conn.cursor()
 
     try:
-        datetime.strptime(start_date, '%d-%m-%Y')
-        datetime.strptime(end_date, '%d-%m-%Y')
+        datetime.strptime(start_date, '%d/%m/%Y')
+        datetime.strptime(end_date, '%d/%m/%Y')
+
     except ValueError:
         return "Invalid date Range"
 
-    query = "SELECT * FROM crash_data WHERE ACCIDENT_DATE BETWEEN ? AND ?"
+    query = "SELECT COUNT(*) FROM crash_data WHERE ACCIDENT_DATE >= ? AND ACCIDENT_DATE <= ?"
     cursor.execute(query, (start_date, end_date))
-    data = cursor.fetchall()
-    return data
-
+    count = cursor.fetchone()[0]  # Retrieve the count value
+    # cursor.close()
+    return count
 
 def calculate_average_by_hour_of_day(conn):
     cursor = conn.cursor()
-    query = "SELECT strftime('%H', ACCIDENT_TIME) AS hour, AVG(INJ_OR_FATAL) AS avg_injuries FROM crash_data GROUP BY hour"
+    query = ("SELECT strftime('%H', ACCIDENT_TIME) AS hour, AVG(INJ_OR_FATAL) AS "
+             "avg_injuries FROM crash_data GROUP BY hour")
     cursor.execute(query)
     data = cursor.fetchall()
+    cursor.close()
     return data
-
 
 def filter_vsads_by_keywords(conn, keywords):
     cursor = conn.cursor()
@@ -104,43 +111,43 @@ def filter_vsads_by_keywords(conn, keywords):
     query = "SELECT * FROM crash_data WHERE ACCIDENT_TYPE IN ({})".format(",".join(["?"] * len(keywords)))
     cursor.execute(query, keywords)
     data = cursor.fetchall()
+    cursor.close()
     return data
-
 
 def filter_vsads_by_alcohol(conn, alcohol_related):
     cursor = conn.cursor()
-    # Build a parameterized query for alcohol-related filter
+    # A parameterized query for alcohol-related filter
     query = "SELECT * FROM crash_data WHERE ALCOHOL_RELATED = ?"
     cursor.execute(query, (alcohol_related,))
     data = cursor.fetchall()
+    cursor.close()
     return data
-
 
 if __name__ == "__main__":
     # Create a connection to the database
-    with sqlite3.connect('vsads.db') as conn:
-        create_table_if_not_exists(conn)
+    with sqlite3.connect('crash_data.db') as conn:
+        create_table_if_not_exists(conn)  # Create the table if it doesn't exist
 
-        # Testing functionality of DB of VSADS
+        start_date = "4/10/2013"   # Use the correct date format '4/10/2013'
+        end_date = "2/01/2016"     # Use the correct date format '2/01/2016'
 
-        start_date = "4/10/2013"   # Saying invalid date range, Check tghis in function!!!
-        end_date = "2/01/2016"
-        # Print results for test
-        result = search_vsads_by_date_range(conn, start_date, end_date)
-        if isinstance(result, str):
-            print(result)
+        print("Start Date:", start_date)
+        print("End Date:", end_date)
+
+        count = count_vsads_by_date_range(conn, start_date, end_date)
+        if isinstance(count, str):
+            print(count)
         else:
-            print("Data within date range:", len(result), "records found.")
+            print("Number of accidents within date range:", count)
 
-        # Print results for test
+        """
         average_injuries_by_hour = calculate_average_by_hour_of_day(conn)
         print("Average injuries by hour of day:", average_injuries_by_hour)
 
-        # Print results for test
         selected_keywords = ["Collision", "Rollover"]
         filtered_data = filter_vsads_by_keywords(conn, selected_keywords)
         print("Filtered data by keywords:", len(filtered_data), "records found.")
 
-        # Print results for test
         alcohol_related_data = filter_vsads_by_alcohol(conn, "Yes")
         print("Alcohol-related data:", len(alcohol_related_data), "records found.")
+        """
