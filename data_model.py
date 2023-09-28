@@ -1,10 +1,11 @@
 import sqlite3
-from datetime import datetime
+import datetime
 import pandas as pd
 
 # Read the CSV file into a DataFrame
 crash_data = pd.read_csv('Crash Statistics Victoria.csv')
-# with pd.option_context("display.max_columns", 50):
+crash_data['ACCIDENT_DATE'] = pd.to_datetime(crash_data['ACCIDENT_DATE'], format='%d/%m/%Y')
+crash_data['ACCIDENT_TIME'] = pd.to_datetime(crash_data['ACCIDENT_TIME'], format='%H.%M.%S')
 #     print(crash_data.head())
 
 
@@ -82,8 +83,8 @@ with sqlite3.connect('crash_data.db') as conn:
     # Insert data from the DataFrame into the database
     crash_data.to_sql('crash_data', conn, if_exists='replace', index=False)
 
-    start_date = "4/10/2013"   # Use the correct date format '4/10/2013'
-    end_date = "2/01/2016"     # Use the correct date format '2/01/2016'
+    start_date = datetime.datetime(2013, 10, 4)   # Use the correct date format '4/10/2013'
+    end_date = datetime.datetime(2016, 1, 2)     # Use the correct date format '2/01/2016'
 
     print("Start Date:", start_date)
     print("End Date:", end_date)
@@ -92,12 +93,12 @@ with sqlite3.connect('crash_data.db') as conn:
 def count_vsads_by_date_range(conn, start_date, end_date):
     cursor = conn.cursor()
 
-    try:
-        # Convert start_date and end_date to the correct format 'yyyy-mm-dd'
-        start_date = datetime.strptime(start_date, '%d/%m/%Y').strftime('%Y-%m-%d')
-        end_date = datetime.strptime(end_date, '%d/%m/%Y').strftime('%Y-%m-%d')
-    except ValueError:
-        return "Invalid date Range"
+    # try:
+    #     # Convert start_date and end_date to the correct format 'yyyy-mm-dd'
+    #     # start_date = datetime.date(start_date, '%d/%m/%Y').strftime('%Y-%m-%d')
+    #     # end_date = datetime.date(end_date, '%d/%m/%Y').strftime('%Y-%m-%d')
+    # except ValueError:
+    #     return "Invalid date Range"
 
     query = "SELECT COUNT(*) FROM crash_data WHERE ACCIDENT_DATE BETWEEN ? AND ?"
     cursor.execute(query, (start_date, end_date))
@@ -143,24 +144,19 @@ if __name__ == "__main__":
         row_count = cursor.fetchone()[0]
         print("Number of rows in crash_data table:", row_count)
 
-        cursor.execute("SELECT ACCIDENT_DATE FROM crash_data where ACCIDENT_DATE = '04/10/2013' LIMIT 1")
-        sample_dates = cursor.fetchall()
-        print("Sample dates within the date range:", sample_dates)
-
         count = count_vsads_by_date_range(conn, start_date, end_date)
         if isinstance(count, str):
             print(count)
         else:
             print("Number of accidents within date range:", count)
 
-        """
         average_injuries_by_hour = calculate_average_by_hour_of_day(conn)
         print("Average injuries by hour of day:", average_injuries_by_hour)
 
-        selected_keywords = ["Collision", "Rollover"]
+        selected_keywords = ["Collision with vehicle", "Struck animal"]
         filtered_data = filter_vsads_by_keywords(conn, selected_keywords)
         print("Filtered data by keywords:", len(filtered_data), "records found.")
 
-        alcohol_related_data = filter_vsads_by_alcohol(conn, "Yes")
+
+        alcohol_related_data = filter_vsads_by_alcohol(conn, False)
         print("Alcohol-related data:", len(alcohol_related_data), "records found.")
-        """
