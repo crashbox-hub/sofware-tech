@@ -2,14 +2,17 @@ import sqlite3
 from datetime import datetime
 import pandas as pd
 
+# Read the CSV file into a DataFrame
 crash_data = pd.read_csv('Crash Statistics Victoria.csv')
+# with pd.option_context("display.max_columns", 50):
+#     print(crash_data.head())
 
 
-
-# Create a table in the database if it doesn't exist
-def create_table_if_not_exists(conn):
+# Create a connection to the database
+with sqlite3.connect('crash_data.db') as conn:
+    # Create the table if it doesn't exist
     cursor = conn.cursor()
-    cursor.execute(''' CREATE TABLE IF NOT EXISTS crash_data (
+    cursor.execute('''CREATE TABLE IF NOT EXISTS crash_data (
         OBJECTID INTEGER PRIMARY KEY,
         ACCIDENT_NO TEXT,
         ABS_CODE TEXT,
@@ -73,27 +76,32 @@ def create_table_if_not_exists(conn):
         DIVIDED TEXT,
         DIVIDED_ALL TEXT,
         STAT_DIV_NAME TEXT
-    )
-    ''')
+    )''')
     conn.commit()
 
+    # Insert data from the DataFrame into the database
+    crash_data.to_sql('crash_data', conn, if_exists='replace', index=False)
 
+    start_date = "4/10/2013"   # Use the correct date format '4/10/2013'
+    end_date = "2/01/2016"     # Use the correct date format '2/01/2016'
+
+    print("Start Date:", start_date)
+    print("End Date:", end_date)
 
 # Search for records within a date range
 def count_vsads_by_date_range(conn, start_date, end_date):
     cursor = conn.cursor()
 
     try:
-        datetime.strptime(start_date, '%d/%m/%Y')
-        datetime.strptime(end_date, '%d/%m/%Y')
-
+        # Convert start_date and end_date to the correct format 'yyyy-mm-dd'
+        start_date = datetime.strptime(start_date, '%d/%m/%Y').strftime('%Y-%m-%d')
+        end_date = datetime.strptime(end_date, '%d/%m/%Y').strftime('%Y-%m-%d')
     except ValueError:
         return "Invalid date Range"
 
-    query = "SELECT COUNT(*) FROM crash_data WHERE ACCIDENT_DATE >= ? AND ACCIDENT_DATE <= ?"
+    query = "SELECT COUNT(*) FROM crash_data WHERE ACCIDENT_DATE BETWEEN ? AND ?"
     cursor.execute(query, (start_date, end_date))
     count = cursor.fetchone()[0]  # Retrieve the count value
-    # cursor.close()
     return count
 
 def calculate_average_by_hour_of_day(conn):
@@ -126,13 +134,18 @@ def filter_vsads_by_alcohol(conn, alcohol_related):
 if __name__ == "__main__":
     # Create a connection to the database
     with sqlite3.connect('crash_data.db') as conn:
-        create_table_if_not_exists(conn)  # Create the table if it doesn't exist
 
-        start_date = "4/10/2013"   # Use the correct date format '4/10/2013'
-        end_date = "2/01/2016"     # Use the correct date format '2/01/2016'
+        # Check the number of rows in the DataFrame
+        print("Number of rows in crash_data DataFrame:", len(crash_data))
 
-        print("Start Date:", start_date)
-        print("End Date:", end_date)
+        # Check the number of rows in the crash_data table in the database
+        cursor.execute("SELECT COUNT(*) FROM crash_data")
+        row_count = cursor.fetchone()[0]
+        print("Number of rows in crash_data table:", row_count)
+
+        cursor.execute("SELECT ACCIDENT_DATE FROM crash_data where ACCIDENT_DATE = '04/10/2013' LIMIT 1")
+        sample_dates = cursor.fetchall()
+        print("Sample dates within the date range:", sample_dates)
 
         count = count_vsads_by_date_range(conn, start_date, end_date)
         if isinstance(count, str):
