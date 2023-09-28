@@ -39,19 +39,54 @@ class HomePanel(wx.Panel):  # Might put this in a different file
         self.SetSizer(sizer)
 
 
-class AccInfoPanel(wx.Panel): # Might put this in a different file
+class AccInfoPanel(wx.Panel):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        # Create a SearchPanel on the left-hand side
         search_panel = SearchPanel(self)
         sizer.Add(search_panel, 0, wx.ALL, BORDER)
 
-        content_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.headline_text = wx.StaticText(self, style=wx.ALIGN_CENTER, label="Accident Information")
-        content_sizer.Add(self.headline_text, 0, wx.ALL | wx.EXPAND, BORDER)
-        sizer.Add(content_sizer, 1, wx.EXPAND)
+        # Create a container for the content on the right-hand side
+        content_container = wx.Panel(self)
+        content_container.SetSizer(wx.BoxSizer(wx.VERTICAL))
+
+        self.headline_text = wx.StaticText(content_container, style=wx.ALIGN_CENTER, label="Accident Information")
+        content_container.GetSizer().Add(self.headline_text, 0, wx.ALL | wx.EXPAND, BORDER)
+
+        # Create a notebook for "Type of Accident" and "Time of Day" tabs
+        acc_info_notebook = wx.Notebook(content_container)
+        type_of_accident_panel = TypeOfAccidentPanel(acc_info_notebook)
+        time_of_day_panel = TimeOfDayPanel(acc_info_notebook)
+
+        # Add tabs to the notebook
+        acc_info_notebook.AddPage(type_of_accident_panel, "Type of Accident")
+        acc_info_notebook.AddPage(time_of_day_panel, "Time of Day")
+
+        # Add the notebook to the content container
+        content_container.GetSizer().Add(acc_info_notebook, 1, wx.EXPAND | wx.ALL, BORDER)
+
+        # Add the content container to the sizer
+        sizer.Add(content_container, 1, wx.EXPAND)
+
         self.SetSizer(sizer)
+
+class TypeOfAccidentPanel(wx.Panel):
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        # Create and display the graph or chart for "Type of Accident" here
+        # For example, you can use matplotlib to create and display the chart
+
+
+class TimeOfDayPanel(wx.Panel):
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        # Create and display the graph or chart for "Time of Day" here
+        # For example, you can use matplotlib to create and display the chart
 
 
 class SearchPanel(wx.Panel): # Might put this in a different file
