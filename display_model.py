@@ -1,7 +1,10 @@
 import wx
 import wx.adv
 import pandas as pd
+import sqlite3
 import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg
 
 BORDER = 5
 
@@ -83,22 +86,46 @@ class TypeOfAccidentPanel(wx.Panel):
 
 class TimeOfDayPanel(wx.Panel):
     def __init__(self, parent):
-        super().__init__(parent)
+        super(TimeOfDayPanel, self).__init__(parent)
+        self.figure, self.ax = plt.subplots(figsize=(6, 4))
 
-        # Create and display the graph or chart for "Time of Day" here
-        # For example, you can use matplotlib to create and display the chart
+        self.canvas = FigureCanvasWxAgg(self, -1, self.figure)
 
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(self.canvas, 1, wx.EXPAND)
+        self.SetSizer(sizer)
 
-class SearchPanel(wx.Panel): # Might put this in a different file
+    def create_bar_graph(self, labels, counts):
+        self.ax.clear()
+        x = np.arange(len(labels))
+        self.ax.bar(x, counts)
+        self.ax.set_xticks(x)
+        self.ax.set_xticklabels(labels)
+        self.ax.set_xlabel("Day of the Week")
+        self.ax.set_ylabel("Accident Count")
+        self.ax.set_title("Accidents by Day of the Week")
+        self.figure.tight_layout()
+        self.canvas.draw()
+
+    def clear_plot(self):
+        self.ax.clear()
+        self.canvas.draw()
+
+class SearchPanel(wx.Panel):
     def __init__(self, parent):
         super(SearchPanel, self).__init__(parent, style=wx.BORDER_SIMPLE)
         sizer = wx.BoxSizer(wx.VERTICAL)
 
-        label = wx.StaticText(self, wx.ID_ANY, "Select Options:")
+        label = wx.StaticText(self, wx.ID_ANY, "Accident Types:")
         sizer.Add(label, 0, wx.ALL | wx.EXPAND, BORDER)
 
         self.list_box = wx.ListBox(self, wx.ID_ANY,
-                                   choices=["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"],
+                                   choices=["Struck Pedestrian", "Collision with vehicle",
+                                            "Collision with a fixed object", "No collision and no object struck",
+                                            "Struck animal", "Vehicle overturned (no collision)",
+                                            "Collision with some other object", "Fall from or in moving vehicle",
+                                            "Other accident"],
+
                                    style=wx.LB_MULTIPLE)
         sizer.Add(self.list_box, 0, wx.ALL | wx.EXPAND, BORDER)
 
