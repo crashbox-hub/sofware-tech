@@ -103,6 +103,7 @@ class SearchPanel(wx.Panel): # Might put this in a different file
         sizer.Add(self.list_box, 0, wx.ALL | wx.EXPAND, BORDER)
 
         self.clear_button = wx.Button(self, label="Clear")
+        self.clear_button.Bind(wx.EVT_BUTTON, self.on_clear_button_click)  # Binding to event
         sizer.Add(self.clear_button, 0, wx.ALL | wx.EXPAND, BORDER)
 
         date_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -134,6 +135,10 @@ class SearchPanel(wx.Panel): # Might put this in a different file
 
         sizer.Add(date_sizer, 0, wx.ALL | wx.EXPAND, BORDER)
         self.SetSizer(sizer)
+
+    # Event handler for the clear button being pressed by the user.
+    def on_clear_button_click(self, event):
+        self.list_box.SetSelection(wx.NOT_FOUND)
 
 
 class MapPanel(wx.Panel): # Might put this in a different file
