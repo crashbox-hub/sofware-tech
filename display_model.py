@@ -131,7 +131,8 @@ class SearchPanel(wx.Panel): # Might put this in a different file
         date_sizer.Add(self.alcohol_related_checkbox, 0, wx.ALL | wx.EXPAND, BORDER)
 
         self.generate_report_button = wx.Button(self, label="Generate Report")
-        date_sizer.Add(self.generate_report_button, 0, wx.ALL | wx.EXPAND, BORDER)
+        self.generate_report_button.Bind(wx.EVT_BUTTON, self.on_generate_report_button_click)  # Bind the event handler
+        sizer.Add(self.generate_report_button, 0, wx.ALL | wx.EXPAND, BORDER)
 
         sizer.Add(date_sizer, 0, wx.ALL | wx.EXPAND, BORDER)
         self.SetSizer(sizer)
@@ -139,6 +140,25 @@ class SearchPanel(wx.Panel): # Might put this in a different file
     # Event handler for the clear button being pressed by the user.
     def on_clear_button_click(self, event):
         self.list_box.SetSelection(wx.NOT_FOUND)
+
+    # Event handler for the Generate Report button being pressed by the user.
+    def on_generate_report_button_click(self, event):
+        selected_options = self.list_box.GetSelections()
+        start_date = self.start_date_picker.GetValue()
+        end_date = self.end_date_picker.GetValue()
+        alcohol_related = self.alcohol_related_checkbox.GetValue()
+
+        # Create a report message
+        report_message = "Report generated with the following options:\n"
+        report_message += f"Selected Options: {selected_options}\n"
+        report_message += f"Start Date: {start_date}\n"
+        report_message += f"End Date: {end_date}\n"
+        report_message += f"Alcohol Related: {alcohol_related}"
+
+        # Create and display a message dialog with the report
+        dlg = wx.MessageDialog(self, report_message, "Report", wx.OK | wx.ICON_INFORMATION)
+        dlg.ShowModal()
+        dlg.Destroy()
 
 
 class MapPanel(wx.Panel): # Might put this in a different file
