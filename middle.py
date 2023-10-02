@@ -9,93 +9,70 @@
 import sqlite3
 import pandas as pd
 import datetime
+import matplotlib.pyplot as plt
+import data_model as dm
+import display_model as ds
+
 
 
 class DataProcessor:
     def __init__(self, db_filename):
         self.db_filename = db_filename
 
-    def create_connection(self):
-        try:
-            conn = sqlite3.connect(self.db_filename)
-            return conn
-        except sqlite3.Error as e:
-            print(f"Error connecting to the database: {e}")
-            return None
+    # A switch statement to determine which method to call from the data model
+    def process_data(self, method, *args):
+        from data_model import (count_vsads_by_date_range,
+                                calculate_average_by_hour_of_day, filter_vsads_by_keywords,
+                                filter_vsads_by_alcohol)
 
-    def count_accidents_by_date_range(self, start_date, end_date):
-        try:
-            with self.create_connection() as conn:
-                cursor = conn.cursor()
-                query = "SELECT COUNT(*) FROM crash_data WHERE ACCIDENT_DATE BETWEEN ? AND ?"
-                cursor.execute(query, (start_date, end_date))
-                count = cursor.fetchone()[0]
-                return count
-        except Exception as e:
-            print(f"Error counting accidents by date range: {e}")
-            return None
-
-    def calculate_average_injuries_by_hour(self):
-        try:
-            with self.create_connection() as conn:
-                cursor = conn.cursor()
-                query = ("SELECT strftime('%H', ACCIDENT_TIME) AS hour, AVG(INJ_OR_FATAL) AS avg_injuries "
-                         "FROM crash_data GROUP BY hour")
-                cursor.execute(query)
-                data = cursor.fetchall()
-                return data
-        except Exception as e:
-            print(f"Error calculating average injuries by hour: {e}")
-            return None
-
-    def filter_accidents_by_keywords(self, keywords):
-        try:
-            with self.create_connection() as conn:
-                cursor = conn.cursor()
-                query = "SELECT * FROM crash_data WHERE ACCIDENT_TYPE IN ({})".format(",".join(["?"] * len(keywords)))
-                cursor.execute(query, keywords)
-                data = cursor.fetchall()
-                return data
-        except Exception as e:
-            print(f"Error filtering accidents by keywords: {e}")
-            return None
-
-    def filter_accidents_by_alcohol(self, alcohol_related):
-        try:
-            with self.create_connection() as conn:
-                cursor = conn.cursor()
-                query = "SELECT * FROM crash_data WHERE ALCOHOL_RELATED = ?"
-                cursor.execute(query, (alcohol_related,))
-                data = cursor.fetchall()
-                return data
-        except Exception as e:
-            print(f"Error filtering accidents by alcohol-related: {e}")
-            return None
+        #
+        from display_model import class
 
 
-if __name__ == "__main__":
-    db_filename = 'crash_data.db'
-    data_processor = DataProcessor(db_filename)
+        with sqlite3.connect(self.db_filename) as conn:
+            cursor = conn.cursor()
+            if method == "count_vsads_by_date_range":
+                return count_vsads_by_date_range(conn, *args)
+            elif method == "calculate_average_by_hour_of_day":
+                return calculate_average_by_hour_of_day(conn)
+            elif method == "filter_vsads_by_keywords":
+                return filter_vsads_by_keywords(conn, *args)
+            elif method == "filter_vsads_by_alcohol":
+                return filter_vsads_by_alcohol(conn, *args)
+            else:
+                return "Invalid method"
+            cursor.close()
 
-    start_date = datetime.datetime(2013, 10, 4)
-    end_date = datetime.datetime(2016, 1, 2)
+    # A bar chart that displays the number of accidents by accident type for the parameters selected
+    def TypeOfAccidentBarChart(self, keywords):
+        data = self.process_data("filter_vsads_by_keywords", keywords)
+        df = pd.DataFrame(data, columns=['ACCIDENT_TYPE', 'INJ_OR_FATAL'])
+        df = df.groupby('ACCIDENT_TYPE')['INJ_OR_FATAL'].sum()
+        df.plot.bar()
+        plt.show()
 
-    count = data_processor.count_accidents_by_date_range(start_date, end_date)
-    if count is not None:
-        print("Number of accidents within date range:", count)
+    # A Heatmap that displays the number of accidents by hour of day for the parameters selected
+    def HourOfDayHeatmap(self, keywords):
+        data = self.process_data("filter_vsads_by_keywords", keywords)
+        df = pd.DataFrame(data, columns=['ACCIDENT_TYPE', 'INJ_OR_FATAL', 'ACCIDENT_TIME'])
+        df['ACCIDENT_TIME'] = pd.to_datetime(df['ACCIDENT_TIME'])
+        df['hour'] = df['ACCIDENT_TIME'].dt.hour
+        df = df.groupby('hour')['INJ_OR_FATAL'].sum()
+        df.plot.bar()
+        plt.show()
 
-    average_injuries_by_hour = data_processor.calculate_average_injuries_by_hour()
-    if average_injuries_by_hour is not None:
-        print("Average injuries by hour of day:", average_injuries_by_hour)
+    # Create a scatter plot of the parameters selected against the longitude and latitude of the accidents
+    def LocationScatterPlot(self, keywords):
+        data = self.process_data("filter_vsads_by_keywords", keywords)
+        df = pd.DataFrame(data, columns=['ACCIDENT_TYPE', 'INJ_OR_FATAL', 'LONGITUDE', 'LATITUDE'])
+        plt.scatter(df['LONGITUDE'], df['LATITUDE'])
+        plt.show()
 
-    selected_keywords = ["Collision with vehicle", "Struck animal"]
-    filtered_data = data_processor.filter_accidents_by_keywords(selected_keywords)
-    if filtered_data is not None:
-        print("Filtered data by keywords:", len(filtered_data), "records found.")
 
-    alcohol_related_data = data_processor.filter_accidents_by_alcohol("No")
-    if alcohol_related_data is not None:
-        print("Non-alcohol-related data:", len(alcohol_related_data), "records found.")
+
+
+
+
 
 
 

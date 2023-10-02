@@ -103,6 +103,7 @@ def count_vsads_by_date_range(conn, start_date, end_date):
     query = "SELECT COUNT(*) FROM crash_data WHERE ACCIDENT_DATE BETWEEN ? AND ?"
     cursor.execute(query, (start_date, end_date))
     count = cursor.fetchone()[0]  # Retrieve the count value
+
     return count
 
 def calculate_average_by_hour_of_day(conn):
@@ -136,6 +137,8 @@ if __name__ == "__main__":
     # Create a connection to the database
     with sqlite3.connect('crash_data.db') as conn:
 
+        """
+        ----------------------Testing Functions----------------------
         # Check the number of rows in the DataFrame
         print("Number of rows in crash_data DataFrame:", len(crash_data))
 
@@ -160,3 +163,4 @@ if __name__ == "__main__":
 
         alcohol_related_data = filter_vsads_by_alcohol(conn, False)
         print("Alcohol-related data:", len(alcohol_related_data), "records found.")
+        """
