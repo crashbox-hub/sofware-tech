@@ -105,6 +105,16 @@ with sqlite3.connect('crash_data.db') as conn:
 
         return count
 
+    # Returns all records within a date range
+    def vsads_by_date_range(start_date, end_date):
+        query = "SELECT * FROM crash_data WHERE ACCIDENT_DATE BETWEEN ? AND ?"
+        cursor.execute(query, (start_date, end_date))
+        data = cursor.fetchall()
+        cursor.close()
+        return data
+
+
+
     def calculate_average_by_hour_of_day():
         query = ("SELECT strftime('%H', ACCIDENT_TIME) AS hour, AVG(INJ_OR_FATAL) AS "
                  "avg_injuries FROM crash_data GROUP BY hour")
