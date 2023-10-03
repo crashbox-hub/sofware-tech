@@ -14,6 +14,8 @@ from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg
 
 from Constants import BORDER
 
+from data_model import crash_data
+
 
 class DataProcessor:
     def __init__(self, db_filename):
@@ -224,7 +226,7 @@ class AccInfoPanel(wx.Panel):
         # Create a notebook for "Type of Accident" and "Time of Day" tabs
         acc_info_notebook = wx.Notebook(content_container)
         type_of_accident_panel = TypeOfAccidentPanel(acc_info_notebook)
-        time_of_day_panel = TimeOfDayPanel(acc_info_notebook)
+        time_of_day_panel = DayOfWeekPanel(acc_info_notebook)
 
         # Add tabs to the notebook
         acc_info_notebook.AddPage(type_of_accident_panel, "Type of Accident")
@@ -243,33 +245,68 @@ class TypeOfAccidentPanel(wx.Panel):
     def __init__(self, parent):
         super().__init__(parent)
 
-        # Create and display the graph or chart for "Type of Accident" here
-        # For example, you can use matplotlib to create and display the chart
 
-
-class TimeOfDayPanel(wx.Panel):
+class DayOfWeekPanel(wx.Panel):
     def __init__(self, parent):
-        super(TimeOfDayPanel, self).__init__(parent)
+        super(DayOfWeekPanel, self).__init__(parent)
         self.figure, self.ax = plt.subplots(figsize=(6, 4))
 
         self.canvas = FigureCanvasWxAgg(self, -1, self.figure)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.canvas, 1, wx.EXPAND)
+
+        crash_data['ACCIDENT_DATE'] = pd.to_datetime(crash_data['ACCIDENT_DATE'])
+        crash_data['ACCIDENT_TIME'] = pd.to_datetime(crash_data['ACCIDENT_TIME'])
+        crash_data.DAY_OF_WEEK.unique()
+        crash_data['DAY_OF_WEEK'] = crash_data['ACCIDENT_DATE'].dt.day_name()
+
+        day_label = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        crash_data['DAY_OF_WEEK'] = pd.Categorical(crash_data['DAY_OF_WEEK'], categories=day_label, ordered=True)
+
         self.SetSizer(sizer)
 
-    def create_bar_graph(self, labels, counts):
-        self.ax.clear()
-        x = np.arange(len(labels))
-        self.ax.bar(x, counts)
-        self.ax.set_xticks(x)
-        self.ax.set_xticklabels(labels)
-        self.ax.set_xlabel("Day of the Week")
-        self.ax.set_ylabel("Accident Count")
-        self.ax.set_title("Accidents by Day of the Week")
-        self.figure.tight_layout()
-        self.canvas.draw()
+    # Plot a bar chart of the number of accidents by accident type for the parameters selected
+    def create_bar_graph(self, day_label, counts):
+            plt.bar(day_label, counts)
+            plt.title('Accident by Day of Week')
+            plt.xlabel('Day of Week')
+            plt.ylabel('Number of Accidents')
+            plt.hue = 'Day of Week'
+            plt.show()
+            # plt.savefig('accident_by_day_of_week.png')
+
+
+
+
+
+
 
     def clear_plot(self):
         self.ax.clear()
         self.canvas.draw()
+
+
+# Run some tests to ensure the middle.py is working correctly
+if __name__ == "__main__":
+        app = wx.App(False)
+        frame = wx.Frame(None, wx.ID_ANY, "Test TimeOfDayPanel")
+        panel = DayOfWeekPanel(frame)
+        frame.Show()
+
+        # Simulate some data for testing
+        label = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        counts = crash_data['DAY_OF_WEEK'].value_counts()
+
+        # Call the create_bar_graph method on the panel instance
+        panel.create_bar_graph(label, counts)
+
+        app.MainLoop()
+
+
+
+
+
+
+
+

@@ -3,7 +3,7 @@ import datetime
 import pandas as pd
 
 # Read the CSV file into a DataFrame
-crash_data = pd.read_csv('Crash Statistics Victoria.csv')
+crash_data = pd.read_csv('Crash Statistics Victoria.csv', low_memory=False)
 crash_data['ACCIDENT_DATE'] = pd.to_datetime(crash_data['ACCIDENT_DATE'], format='%d/%m/%Y')
 crash_data['ACCIDENT_TIME'] = pd.to_datetime(crash_data['ACCIDENT_TIME'], format='%H.%M.%S')
 #     print(crash_data.head())
