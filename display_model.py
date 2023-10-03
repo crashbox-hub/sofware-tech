@@ -3,6 +3,7 @@ import wx.adv
 import wx
 import wx.adv
 from Constants import BORDER
+import middle as mid
 
 
 
@@ -39,6 +40,8 @@ class HomePanel(wx.Panel):  # Might put this in a different file
 class AccInfoPanel(wx.Panel):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
+
+        #self.data_processor = mid.DataProcessor('crash_data.db')  # Create an instance of DataProcessor
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         # Create a SearchPanel on the left-hand side
@@ -77,6 +80,8 @@ class SearchPanel(wx.Panel):
 
     def __init__(self, parent):
         super(SearchPanel, self).__init__(parent, style=wx.BORDER_SIMPLE)
+
+        self.data_processor = mid.DataProcessor('crash_data.db')  # Create an instance of DataProcessor
 
         self.start_date_picker = None
         self.end_date_picker = None
@@ -136,14 +141,17 @@ class SearchPanel(wx.Panel):
         end_date = self.end_date_picker.GetValue()
         alcohol_related = self.alcohol_related_checkbox.GetValue()
 
-        
+        # Convert wx.DateTime objects to string format 'YYYY-MM-DD'
+        start_date_str = start_date.Format("%Y-%m-%d")
+        end_date_str = end_date.Format("%Y-%m-%d")
 
         # Create a report message
         report_message = "Report generated with the following options:\n"
         report_message += f"Selected Options: {selected_options}\n"
-        report_message += f"Start Date: {start_date}\n"
-        report_message += f"End Date: {end_date}\n"
-        report_message += f"Alcohol Related: {alcohol_related}"
+        report_message += f"Start Date: {start_date_str}\n"  # Use the formatted strings
+        report_message += f"End Date: {end_date_str}\n"  # Use the formatted strings
+        report_message += f"Alcohol Related: {alcohol_related}\n"
+        report_message += f"Accident count: {self.data_processor.count_vsads_by_date_range(start_date_str, end_date_str)}"
 
         # Create and display a message dialog with the report
         dlg = wx.MessageDialog(self, report_message, "Report", wx.OK | wx.ICON_INFORMATION)

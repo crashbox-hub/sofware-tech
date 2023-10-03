@@ -25,8 +25,10 @@ class DataProcessor:
 # 02/01/2016
 
     def count_vsads_by_date_range(self, start_date, end_date):
-        dtm.count_vsads_by_date_range(start_date, end_date)
         return dtm.count_vsads_by_date_range(start_date, end_date)
+
+
+
 
 
 
@@ -52,6 +54,8 @@ if __name__ == "__main__":
         start_date = datetime.datetime(2013, 10, 4)
         end_date = datetime.datetime(2016, 1, 2)
 
+
+        # Testing
         print("Start Date:", start_date)
         print("End Date:", end_date)
 
