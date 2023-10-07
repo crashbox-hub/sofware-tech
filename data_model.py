@@ -8,7 +8,6 @@ crash_data['ACCIDENT_DATE'] = pd.to_datetime(crash_data['ACCIDENT_DATE'], format
 crash_data['ACCIDENT_TIME'] = pd.to_datetime(crash_data['ACCIDENT_TIME'], format='%H.%M.%S')
 #     print(crash_data.head())
 
-
 # Create a connection to the database
 with sqlite3.connect('crash_data.db') as conn:
     # Create the table if it doesn't exist
@@ -81,7 +80,8 @@ with sqlite3.connect('crash_data.db') as conn:
     conn.commit()
 
     # Insert data from the DataFrame into the database
-    crash_data.to_sql('crash_data', conn, if_exists='replace', index=False)
+    insertData = crash_data
+    insertData.to_sql('crash_data', conn, if_exists='replace', index=False)
 
     start_date = datetime.datetime(2013, 10, 4)   # Use the correct date format '4/10/2013'
     end_date = datetime.datetime(2016, 1, 2)     # Use the correct date format '2/01/2016'
@@ -127,6 +127,22 @@ with sqlite3.connect('crash_data.db') as conn:
         # Build a parameterized query for multiple keywords
         query = "SELECT * FROM crash_data WHERE ACCIDENT_TYPE IN ({})".format(",".join(["?"] * len(keywords)))
         cursor.execute(query, keywords)
+        data = cursor.fetchall()
+        cursor.close()
+        return data
+
+    def fetch_latitude():
+        # Build a parameterized query for multiple keywords
+        query = "SELECT Latitude FROM crash_data"
+        cursor.execute(query)
+        data = cursor.fetchall()
+        cursor.close()
+        return data
+
+    def fetch_longitude():
+        # Build a parameterized query for multiple keywords
+        query = "SELECT Latitude FROM crash_data"
+        cursor.execute(query)
         data = cursor.fetchall()
         cursor.close()
         return data
