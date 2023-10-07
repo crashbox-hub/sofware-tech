@@ -4,6 +4,8 @@
 # The display model is not aware of the data model
 # The data model is not aware of the display model
 # Use a switch statement to determine which method to call in the data model
+import sqlite3
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -33,10 +35,10 @@ class DataProcessor:
 # 02/01/2016
 
     def count_vsads_by_date_range(self, start_date, end_date):
-        return dtm.count_vsads_by_date_range(start_date, end_date)
+        return data_model.count_vsads_by_date_range(start_date, end_date)
 
     def vsads_by_date_range(self, start_date, end_date):
-        return dtm.vsads_by_date_range(start_date, end_date)
+        return data_model.vsads_by_date_range(start_date, end_date)
 
     # Define a function that plots the 'ACCIDENT_TYPE' column of the DataFrame as the y-axis and the number of
     # occurrences of each accident type as the x-axis
@@ -64,38 +66,29 @@ class DataProcessor:
             plt.title('Accident Types')
             # Add in grid Lines
             plt.grid(True)
-
-
-
-
-
-
-
-
             # Display the plot
             plt.show()
         except Exception as e:
             print("Error:", e)
 
+    @staticmethod
+    def generate_map():
+        # Extract longitude and latitude coordinates
+        longitude = data_model.fetch_longitude()
+        latitude = data_model.fetch_latitude()
 
+        # Create a scatter plot
+        plt.figure(figsize=(8, 6))
+        plt.scatter(longitude, latitude, s=10, alpha=0.5)
+        plt.title('Accident Locations')
+        plt.xlabel('Longitude')
+        plt.ylabel('Latitude')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        # Save the plot as a PNG file
+        plt.savefig('accident_locations.png')
+        # Load the PNG file and display it in the panel
+        accident_locations = wx.Image('accident_locations.png', wx.BITMAP_TYPE_ANY).Scale(200, 200)
+        return accident_locations
 
 if __name__ == "__main__":
     db_filename = 'crash_data.db'
@@ -112,11 +105,6 @@ if __name__ == "__main__":
 
         data_processor.count_vsads_by_date_range(start_date, end_date)
         print(data_processor.count_vsads_by_date_range(start_date, end_date))
-
-
-
-
-
 
 
     # A bar chart that displays the number of accidents by accident type for the parameters selected
@@ -143,22 +131,3 @@ if __name__ == "__main__":
         df = pd.DataFrame(data, columns=['ACCIDENT_TYPE', 'INJ_OR_FATAL', 'LONGITUDE', 'LATITUDE'])
         plt.scatter(df['LONGITUDE'], df['LATITUDE'])
         plt.show()
-
-    @staticmethod
-    def generate_map():
-        # Extract longitude and latitude coordinates
-        longitude = data_model.fetch_longitude()
-        latitude = data_model.fetch_latitude()
-
-        # Create a scatter plot
-        plt.figure(figsize=(8, 6))
-        plt.scatter(longitude, latitude, s=10, alpha=0.5)
-        plt.title('Accident Locations')
-        plt.xlabel('Longitude')
-        plt.ylabel('Latitude')
-
-        # Save the plot as a PNG file
-        plt.savefig('accident_locations.png')
-        # Load the PNG file and display it in the panel
-        accident_locations = wx.Image('accident_locations.png', wx.BITMAP_TYPE_ANY).Scale(200, 200)
-        return accident_locations

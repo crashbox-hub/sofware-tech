@@ -1,4 +1,5 @@
 # Authors: Chris Burrell, Gauruv Grover
+import numpy as np
 import wx
 import wx.adv
 from matplotlib import pyplot as plt
@@ -115,7 +116,7 @@ class SearchPanel(wx.Panel):
     def __init__(self, parent):
         super(SearchPanel, self).__init__(parent, style=wx.BORDER_SIMPLE)
 
-        self.data_processor = mid.DataProcessor('crash_data.db')  # Create an instance of DataProcessor
+        self.data_processor = dP('crash_data.db')  # Create an instance of DataProcessor
 
         self.start_date_picker = None
         self.end_date_picker = None
@@ -195,7 +196,32 @@ class SearchPanel(wx.Panel):
         dlg.ShowModal()
         dlg.Destroy()
 
+class TimeOfDayPanel(wx.Panel):
+    def __init__(self, parent):
+        super(TimeOfDayPanel, self).__init__(parent)
+        self.figure, self.ax = plt.subplots(figsize=(6, 4))
 
+        self.canvas = FigureCanvasWxAgg(self, -1, self.figure)
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(self.canvas, 1, wx.EXPAND)
+        self.SetSizer(sizer)
+
+    def create_bar_graph(self, labels, counts):
+        self.ax.clear()
+        x = np.arange(len(labels))
+        self.ax.bar(x, counts)
+        self.ax.set_xticks(x)
+        self.ax.set_xticklabels(labels)
+        self.ax.set_xlabel("Day of the Week")
+        self.ax.set_ylabel("Accident Count")
+        self.ax.set_title("Accidents by Day of the Week")
+        self.figure.tight_layout()
+        self.canvas.draw()
+
+    def clear_plot(self):
+        self.ax.clear()
+        self.canvas.draw()
 
 
 
