@@ -126,7 +126,7 @@ with sqlite3.connect('crash_data.db') as conn:
         query = "SELECT Latitude FROM crash_data"
         cursor.execute(query)
         data = cursor.fetchall()
-        cursor.close()
+        # cursor.close()
         return data
 
     def fetch_longitude():
@@ -134,7 +134,7 @@ with sqlite3.connect('crash_data.db') as conn:
         query = "SELECT Latitude FROM crash_data"
         cursor.execute(query)
         data = cursor.fetchall()
-        cursor.close()
+        # cursor.close()
         return data
 
     def filter_vsads_by_alcohol(alcohol_related):
