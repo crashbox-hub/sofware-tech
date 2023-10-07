@@ -153,6 +153,9 @@ class SearchPanel(wx.Panel):
         report_message += f"Alcohol Related: {alcohol_related}\n"
         report_message += f"Accident count: {self.data_processor.count_vsads_by_date_range(start_date_str, end_date_str)}"
 
+        # Call the plot_accident_types() function to plot the data fromm the middle.py file
+        self.data_processor.plot_accident_types(start_date_str, end_date_str)
+
         # Create and display a message dialog with the report
         dlg = wx.MessageDialog(self, report_message, "Report", wx.OK | wx.ICON_INFORMATION)
         dlg.ShowModal()

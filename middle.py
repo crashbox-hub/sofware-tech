@@ -3,7 +3,7 @@ import datetime
 import pandas as pd
 import display_model as dm
 import data_model as dtm
-import matplotlib as plot
+import matplotlib.pyplot as plt
 
 
 class DataProcessor:
@@ -26,6 +26,49 @@ class DataProcessor:
 
     def count_vsads_by_date_range(self, start_date, end_date):
         return dtm.count_vsads_by_date_range(start_date, end_date)
+
+    def vsads_by_date_range(self, start_date, end_date):
+        return dtm.vsads_by_date_range(start_date, end_date)
+
+    # Define a function that plots the 'ACCIDENT_TYPE' column of the DataFrame as the y-axis and the number of
+    # occurrences of each accident type as the x-axis
+
+    def plot_accident_types(self, start_date, end_date):
+        try:
+            # Call the vsads_by_date_range() function to get the data
+            data = self.vsads_by_date_range(start_date, end_date)
+
+
+            if not data:
+                print("No data found for the specified date range.")
+                return
+
+            # Extract the 'ACCIDENT_TYPE' values from the data
+            accident_types = [row[7] for row in data]
+
+            # Create a DataFrame from the extracted values
+            df = pd.DataFrame(accident_types, columns=['ACCIDENT_TYPE'])
+
+            # Plot the DataFrame as a bar chart with the number of occurrences on the x-axis
+            df['ACCIDENT_TYPE'].value_counts().plot(kind='barh')
+
+            #Change the Title of the plot to 'Accident Types'
+            plt.title('Accident Types')
+            # Add in grid Lines
+            plt.grid(True)
+
+
+
+
+
+
+
+
+            # Display the plot
+            plt.show()
+        except Exception as e:
+            print("Error:", e)
+
 
 
 
