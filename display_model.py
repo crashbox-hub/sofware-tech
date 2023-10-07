@@ -1,4 +1,4 @@
-import numpy as np
+# Authors: Chris Burrell, Gauruv Grover
 import wx
 import wx.adv
 from matplotlib import pyplot as plt
@@ -7,6 +7,35 @@ from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg
 from middle import DataProcessor as dP
 from Constants import BORDER
 
+
+class MyFrame(wx.Frame):
+    def __init__(self, parent, title):
+        super(MyFrame, self).__init__(parent, title=title, size=(800, 600))
+
+        self.SetMinSize(wx.Size(500, 500))
+        notebook = wx.Notebook(self)
+        notebook.SetSizer(wx.BoxSizer(wx.VERTICAL))
+
+        # Create and add notebook pages
+        notebook.AddPage(HomePanel(notebook), "Home")
+        notebook.AddPage(AccInfoPanel(notebook), "Accident Info")
+        notebook.AddPage(MapPanel(notebook), "Map")
+
+        self.Centre()
+        self.Show(True)
+
+
+class HomePanel(wx.Panel):  # Might put this in a different file
+    def __init__(self, parent, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        self.headline_text = wx.StaticText(self, style=wx.ALIGN_CENTER, label="Accident Information")
+        sizer.Add(self.headline_text, 0, wx.ALL | wx.EXPAND, BORDER)
+        vic_graphic = wx.Image('state_vic_graphic.jpg', wx.BITMAP_TYPE_ANY).Scale(200, 200)
+        graphic_bitmap = wx.StaticBitmap(self, -1, vic_graphic.ConvertToBitmap(), (0, 0),
+                                         (vic_graphic.GetWidth(), vic_graphic.GetHeight()))
+        sizer.Add(graphic_bitmap, 0, wx.ALL | wx.CENTER, BORDER)
+        self.SetSizer(sizer)
 
 class MapPanel(wx.Panel):  # Might put this in a different file
     def __init__(self, parent):
@@ -32,99 +61,6 @@ class MapPanel(wx.Panel):  # Might put this in a different file
 
         # Add the horizontal sizer to the main vertical sizer
         sizer.Add(horizontal_sizer, 1, wx.EXPAND)
-
-        self.SetSizer(sizer)
-
-
-class SearchPanel(wx.Panel):
-    def __init__(self, parent):
-        super(SearchPanel, self).__init__(parent, style=wx.BORDER_SIMPLE)
-        sizer = wx.BoxSizer(wx.VERTICAL)
-
-        label = wx.StaticText(self, wx.ID_ANY, "Accident Types:")
-        sizer.Add(label, 0, wx.ALL | wx.EXPAND, BORDER)
-
-        self.list_box = wx.ListBox(self, wx.ID_ANY,
-                                   choices=["Struck Pedestrian", "Collision with vehicle",
-                                            "Collision with a fixed object", "No collision and no object struck",
-                                            "Struck animal", "Vehicle overturned (no collision)",
-                                            "Collision with some other object", "Fall from or in moving vehicle",
-                                            "Other accident"],
-
-                                   style=wx.LB_MULTIPLE)
-        sizer.Add(self.list_box, 0, wx.ALL | wx.EXPAND, BORDER)
-
-        self.clear_button = wx.Button(self, label="Clear")
-        self.clear_button.Bind(wx.EVT_BUTTON, self.on_clear_button_click)  # Binding to event
-        sizer.Add(self.clear_button, 0, wx.ALL | wx.EXPAND, BORDER)
-
-        date_sizer = wx.BoxSizer(wx.VERTICAL)
-
-        lower_date = wx.DateTime()
-        lower_date.Set(1, wx.DateTime.Jul, 2013)
-        upper_date = wx.DateTime()
-        upper_date.Set(1, wx.DateTime.Feb, 2019)
-
-        self.start_date_text = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.NO_BORDER)
-        date_sizer.Add(self.start_date_text, 0, wx.ALL | wx.EXPAND, BORDER)
-
-        self.start_date_picker = wx.adv.DatePickerCtrl(self, wx.ID_ANY, dt=lower_date,
-                                                       style=wx.adv.DP_DROPDOWN | wx.adv.DP_SHOWCENTURY)
-        date_sizer.Add(self.start_date_picker, 0, wx.ALL | wx.EXPAND, BORDER)
-
-        self.end_date_text = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.NO_BORDER)
-        date_sizer.Add(self.end_date_text, 0, wx.ALL | wx.EXPAND, BORDER)
-
-        self.end_date_picker = wx.adv.DatePickerCtrl(self, wx.ID_ANY, dt=upper_date,
-                                                     style=wx.adv.DP_DROPDOWN | wx.adv.DP_SHOWCENTURY)
-        date_sizer.Add(self.end_date_picker, 0, wx.ALL | wx.EXPAND, BORDER)
-
-        self.alcohol_related_checkbox = wx.CheckBox(self, label="Alcohol Related?")
-        date_sizer.Add(self.alcohol_related_checkbox, 0, wx.ALL | wx.EXPAND, BORDER)
-
-        self.generate_report_button = wx.Button(self, label="Generate Report")
-        self.generate_report_button.Bind(wx.EVT_BUTTON, self.on_generate_report_button_click)  # Bind the event handler
-        sizer.Add(self.generate_report_button, 0, wx.ALL | wx.EXPAND, BORDER)
-
-        sizer.Add(date_sizer, 0, wx.ALL | wx.EXPAND, BORDER)
-        self.SetSizer(sizer)
-
-    # Event handler for the clear button being pressed by the user.
-    def on_clear_button_click(self, event):
-        self.list_box.SetSelection(wx.NOT_FOUND)
-
-    # Event handler for the Generate Report button being pressed by the user.
-    def on_generate_report_button_click(self, event):
-        selected_options = self.list_box.GetSelections()
-        start_date = self.start_date_picker.GetValue()
-        end_date = self.end_date_picker.GetValue()
-        alcohol_related = self.alcohol_related_checkbox.GetValue()
-
-        # Create a report message
-        report_message = "Report generated with the following options:\n"
-        report_message += f"Selected Options: {selected_options}\n"
-        report_message += f"Start Date: {start_date}\n"
-        report_message += f"End Date: {end_date}\n"
-        report_message += f"Alcohol Related: {alcohol_related}"
-
-        # Create and display a message dialog with the report
-        dlg = wx.MessageDialog(self, report_message, "Report", wx.OK | wx.ICON_INFORMATION)
-        dlg.ShowModal()
-        dlg.Destroy()
-
-
-class HomePanel(wx.Panel):  # Might put this in a different file
-    def __init__(self, parent, *args, **kwargs):
-        super().__init__(parent, *args, **kwargs)
-
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        self.headline_text = wx.StaticText(self, style=wx.ALIGN_CENTER, label="Accident Information")
-        sizer.Add(self.headline_text, 0, wx.ALL | wx.EXPAND, BORDER)
-
-        vic_graphic = wx.Image('state_vic_graphic.jpg', wx.BITMAP_TYPE_ANY).Scale(200, 200)
-        graphic_bitmap = wx.StaticBitmap(self, -1, vic_graphic.ConvertToBitmap(), (0, 0),
-                                         (vic_graphic.GetWidth(), vic_graphic.GetHeight()))
-        sizer.Add(graphic_bitmap, 0, wx.ALL | wx.CENTER, BORDER)
 
         self.SetSizer(sizer)
 
@@ -168,56 +104,104 @@ class TypeOfAccidentPanel(wx.Panel):
     def __init__(self, parent):
         super().__init__(parent)
 
-        # Create and display the graph or chart for "Type of Accident" here
-        # For example, you can use matplotlib to create and display the chart
 
-
-class TimeOfDayPanel(wx.Panel):
+class DayOfWeekPanel(wx.Panel):
     def __init__(self, parent):
-        super(TimeOfDayPanel, self).__init__(parent)
-        self.figure, self.ax = plt.subplots(figsize=(6, 4))
+        super(DayOfWeekPanel, self).__init__(parent)
 
-        self.canvas = FigureCanvasWxAgg(self, -1, self.figure)
 
+class SearchPanel(wx.Panel):
+
+    def __init__(self, parent):
+        super(SearchPanel, self).__init__(parent, style=wx.BORDER_SIMPLE)
+
+        self.data_processor = mid.DataProcessor('crash_data.db')  # Create an instance of DataProcessor
+
+        self.start_date_picker = None
+        self.end_date_picker = None
+        self.list_box = None
+        self.alcohol_related_checkbox = None
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.canvas, 1, wx.EXPAND)
+        label = wx.StaticText(self, wx.ID_ANY, "Accident Types:")
+        sizer.Add(label, 0, wx.ALL | wx.EXPAND, BORDER)
+        self.list_box = wx.ListBox(self, wx.ID_ANY,
+                                   choices=["Struck Pedestrian", "Collision with vehicle",
+                                            "Collision with a fixed object", "No collision and no object struck",
+                                            "Struck animal", "Vehicle overturned (no collision)",
+                                            "Collision with some other object", "Fall from or in moving vehicle",
+                                            "Other accident"],
+                                   style=wx.LB_MULTIPLE)
+        sizer.Add(self.list_box, 0, wx.ALL | wx.EXPAND, BORDER)
+        self.clear_button = wx.Button(self, label="Clear")
+        self.clear_button.Bind(wx.EVT_BUTTON, self.on_clear_button_click)  # Binding to event
+        sizer.Add(self.clear_button, 0, wx.ALL | wx.EXPAND, BORDER)
+        date_sizer = wx.BoxSizer(wx.VERTICAL)
+        lower_date = wx.DateTime()
+        lower_date.Set(1, wx.DateTime.Jul, 2013)
+        upper_date = wx.DateTime()
+        upper_date.Set(1, wx.DateTime.Feb, 2019)
+        self.start_date_text = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.NO_BORDER)
+        date_sizer.Add(self.start_date_text, 0, wx.ALL | wx.EXPAND, BORDER)
+        self.start_date_picker = wx.adv.DatePickerCtrl(self, wx.ID_ANY, dt=lower_date,
+                                                       style=wx.adv.DP_DROPDOWN | wx.adv.DP_SHOWCENTURY)
+        date_sizer.Add(self.start_date_picker, 0, wx.ALL | wx.EXPAND, BORDER)
+        self.end_date_text = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.NO_BORDER)
+        date_sizer.Add(self.end_date_text, 0, wx.ALL | wx.EXPAND, BORDER)
+        self.end_date_picker = wx.adv.DatePickerCtrl(self, wx.ID_ANY, dt=upper_date,
+                                                     style=wx.adv.DP_DROPDOWN | wx.adv.DP_SHOWCENTURY)
+        date_sizer.Add(self.end_date_picker, 0, wx.ALL | wx.EXPAND, BORDER)
+        self.alcohol_related_checkbox = wx.CheckBox(self, label="Alcohol Related?")
+        date_sizer.Add(self.alcohol_related_checkbox, 0, wx.ALL | wx.EXPAND, BORDER)
+        self.generate_report_button = wx.Button(self, label="Generate Report")
+        self.generate_report_button.Bind(wx.EVT_BUTTON, self.on_generate_report_button_click)  # Bind the event handler
+        sizer.Add(self.generate_report_button, 0, wx.ALL | wx.EXPAND, BORDER)
+        sizer.Add(date_sizer, 0, wx.ALL | wx.EXPAND, BORDER)
         self.SetSizer(sizer)
+        # The parameters the user currently has selected in the SearchPanel is stored in the following variables:
+        self.list_box.GetSelections()
+        self.start_date_picker.GetValue()
+        self.end_date_picker.GetValue()
+        self.alcohol_related_checkbox.GetValue()
 
-    def create_bar_graph(self, labels, counts):
-        self.ax.clear()
-        x = np.arange(len(labels))
-        self.ax.bar(x, counts)
-        self.ax.set_xticks(x)
-        self.ax.set_xticklabels(labels)
-        self.ax.set_xlabel("Day of the Week")
-        self.ax.set_ylabel("Accident Count")
-        self.ax.set_title("Accidents by Day of the Week")
-        self.figure.tight_layout()
-        self.canvas.draw()
+    # Event handler for the clear button being pressed by the user.
+    def on_clear_button_click(self, event):
+        self.list_box.SetSelection(wx.NOT_FOUND)
 
-    def clear_plot(self):
-        self.ax.clear()
-        self.canvas.draw()
+    # Event handler for the Generate Report button being pressed by the user.
+    # The current
+    def on_generate_report_button_click(self, event):
+        selected_options = self.list_box.GetSelections()
+        start_date = self.start_date_picker.GetValue()
+        end_date = self.end_date_picker.GetValue()
+        alcohol_related = self.alcohol_related_checkbox.GetValue()
+
+        # Convert wx.DateTime objects to string format 'YYYY-MM-DD'
+        start_date_str = start_date.Format("%Y-%m-%d")
+        end_date_str = end_date.Format("%Y-%m-%d")
+
+        # Create a report message
+        report_message = "Report generated with the following options:\n"
+        report_message += f"Selected Options: {selected_options}\n"
+        report_message += f"Start Date: {start_date_str}\n"  # Use the formatted strings
+        report_message += f"End Date: {end_date_str}\n"  # Use the formatted strings
+        report_message += f"Alcohol Related: {alcohol_related}\n"
+        report_message += f"Accident count: {self.data_processor.count_vsads_by_date_range(start_date_str, end_date_str)}"
+
+        # Call the plot_accident_types() function to plot the data fromm the middle.py file
+        self.data_processor.plot_accident_types(start_date_str, end_date_str)
+
+        # Create and display a message dialog with the report
+        dlg = wx.MessageDialog(self, report_message, "Report", wx.OK | wx.ICON_INFORMATION)
+        dlg.ShowModal()
+        dlg.Destroy()
 
 
-class MyFrame(wx.Frame):
-    def __init__(self, parent, title):
-        super(MyFrame, self).__init__(parent, title=title, size=(800, 600))
 
-        self.SetMinSize(wx.Size(500, 500))
-        notebook = wx.Notebook(self)
-        notebook.SetSizer(wx.BoxSizer(wx.VERTICAL))
-
-        # Create and add notebook pages
-        notebook.AddPage(HomePanel(notebook), "Home")
-        notebook.AddPage(AccInfoPanel(notebook), "Accident Info")
-        notebook.AddPage(MapPanel(notebook), "Map")
-
-        self.Centre()
-        self.Show(True)
 
 
 if __name__ == '__main__':
     app = wx.App()
     frame = MyFrame(None, "VSADS Visualisation Tool")
     app.MainLoop()
+
+

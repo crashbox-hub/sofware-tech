@@ -3,7 +3,7 @@ import datetime
 import pandas as pd
 
 # Read the CSV file into a DataFrame
-crash_data = pd.read_csv('Crash Statistics Victoria.csv')
+crash_data = pd.read_csv('Crash Statistics Victoria.csv', low_memory=False)
 crash_data['ACCIDENT_DATE'] = pd.to_datetime(crash_data['ACCIDENT_DATE'], format='%d/%m/%Y')
 crash_data['ACCIDENT_TIME'] = pd.to_datetime(crash_data['ACCIDENT_TIME'], format='%H.%M.%S')
 #     print(crash_data.head())
@@ -104,6 +104,16 @@ with sqlite3.connect('crash_data.db') as conn:
         count = cursor.fetchone()[0]  # Retrieve the count value
 
         return count
+
+    # Returns all records within a date range
+    def vsads_by_date_range(start_date, end_date):
+        query = "SELECT * FROM crash_data WHERE ACCIDENT_DATE BETWEEN ? AND ?"
+        cursor.execute(query, (start_date, end_date))
+        data = cursor.fetchall()
+        cursor.close()
+        return data
+
+
 
     def calculate_average_by_hour_of_day():
         query = ("SELECT strftime('%H', ACCIDENT_TIME) AS hour, AVG(INJ_OR_FATAL) AS "
