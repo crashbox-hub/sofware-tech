@@ -8,7 +8,6 @@ crash_data['ACCIDENT_DATE'] = pd.to_datetime(crash_data['ACCIDENT_DATE'], format
 crash_data['ACCIDENT_TIME'] = pd.to_datetime(crash_data['ACCIDENT_TIME'], format='%H.%M.%S')
 #     print(crash_data.head())
 
-
 # Create a connection to the database
 with sqlite3.connect('crash_data.db') as conn:
     # Create the table if it doesn't exist
@@ -81,7 +80,8 @@ with sqlite3.connect('crash_data.db') as conn:
     conn.commit()
 
     # Insert data from the DataFrame into the database
-    crash_data.to_sql('crash_data', conn, if_exists='replace', index=False)
+    insertData = crash_data
+    insertData.to_sql('crash_data', conn, if_exists='replace', index=False)
 
     start_date = datetime.datetime(2013, 10, 4)   # Use the correct date format '4/10/2013'
     end_date = datetime.datetime(2016, 1, 2)     # Use the correct date format '2/01/2016'
@@ -89,54 +89,63 @@ with sqlite3.connect('crash_data.db') as conn:
     print("Start Date:", start_date)
     print("End Date:", end_date)
 
-# Search for records within a date range
-def count_vsads_by_date_range(conn, start_date, end_date):
-    cursor = conn.cursor()
+    # Search for records within a date range
+    def count_vsads_by_date_range(start_date, end_date):
 
-    # try:
-    #     # Convert start_date and end_date to the correct format 'yyyy-mm-dd'
-    #     # start_date = datetime.date(start_date, '%d/%m/%Y').strftime('%Y-%m-%d')
-    #     # end_date = datetime.date(end_date, '%d/%m/%Y').strftime('%Y-%m-%d')
-    # except ValueError:
-    #     return "Invalid date Range"
+        # try:
+        #     # Convert start_date and end_date to the correct format 'yyyy-mm-dd'
+        #     # start_date = datetime.date(start_date, '%d/%m/%Y').strftime('%Y-%m-%d')
+        #     # end_date = datetime.date(end_date, '%d/%m/%Y').strftime('%Y-%m-%d')
+        # except ValueError:
+        #     return "Invalid date Range"
 
-    query = "SELECT COUNT(*) FROM crash_data WHERE ACCIDENT_DATE BETWEEN ? AND ?"
-    cursor.execute(query, (start_date, end_date))
-    count = cursor.fetchone()[0]  # Retrieve the count value
+        query = "SELECT COUNT(*) FROM crash_data WHERE ACCIDENT_DATE BETWEEN ? AND ?"
+        cursor.execute(query, (start_date, end_date))
+        count = cursor.fetchone()[0]  # Retrieve the count value
 
-    return count
+        return count
 
-def calculate_average_by_hour_of_day(conn):
-    cursor = conn.cursor()
-    query = ("SELECT strftime('%H', ACCIDENT_TIME) AS hour, AVG(INJ_OR_FATAL) AS "
-             "avg_injuries FROM crash_data GROUP BY hour")
-    cursor.execute(query)
-    data = cursor.fetchall()
-    cursor.close()
-    return data
+    def calculate_average_by_hour_of_day():
+        query = ("SELECT strftime('%H', ACCIDENT_TIME) AS hour, AVG(INJ_OR_FATAL) AS "
+                 "avg_injuries FROM crash_data GROUP BY hour")
+        cursor.execute(query)
+        data = cursor.fetchall()
+        cursor.close()
+        return data
 
-def filter_vsads_by_keywords(conn, keywords):
-    cursor = conn.cursor()
-    # Build a parameterized query for multiple keywords
-    query = "SELECT * FROM crash_data WHERE ACCIDENT_TYPE IN ({})".format(",".join(["?"] * len(keywords)))
-    cursor.execute(query, keywords)
-    data = cursor.fetchall()
-    cursor.close()
-    return data
+    def filter_vsads_by_keywords(keywords):
+        # Build a parameterized query for multiple keywords
+        query = "SELECT * FROM crash_data WHERE ACCIDENT_TYPE IN ({})".format(",".join(["?"] * len(keywords)))
+        cursor.execute(query, keywords)
+        data = cursor.fetchall()
+        cursor.close()
+        return data
 
-def filter_vsads_by_alcohol(conn, alcohol_related):
-    cursor = conn.cursor()
-    # A parameterized query for alcohol-related filter
-    query = "SELECT * FROM crash_data WHERE ALCOHOL_RELATED = ?"
-    cursor.execute(query, (alcohol_related,))
-    data = cursor.fetchall()
-    cursor.close()
-    return data
+    def fetch_latitude():
+        # Build a parameterized query for multiple keywords
+        query = "SELECT Latitude FROM crash_data"
+        cursor.execute(query)
+        data = cursor.fetchall()
+        cursor.close()
+        return data
 
-if __name__ == "__main__":
-    # Create a connection to the database
-    with sqlite3.connect('crash_data.db') as conn:
+    def fetch_longitude():
+        # Build a parameterized query for multiple keywords
+        query = "SELECT Latitude FROM crash_data"
+        cursor.execute(query)
+        data = cursor.fetchall()
+        cursor.close()
+        return data
 
+    def filter_vsads_by_alcohol(alcohol_related):
+        # A parameterized query for alcohol-related filter
+        query = "SELECT * FROM crash_data WHERE ALCOHOL_RELATED = ?"
+        cursor.execute(query, (alcohol_related,))
+        data = cursor.fetchall()
+        cursor.close()
+        return data
+
+    if __name__ == "__main__":
         """
         ----------------------Testing Functions----------------------
         # Check the number of rows in the DataFrame
